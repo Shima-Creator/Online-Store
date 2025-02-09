@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+{% load static %}
+{% load shop_tags %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <a href="/product_list/"></a><h1>SHIMA Store</h1>
+    <div class="main_menu_buttons_block">
+
+      <div><a class = 'head_menu_button' href="/categories_list/">Категории</a></div>
+      <div><a class = 'head_menu_button' href="/product_list/">Товары</a></div>
+      <div><a class = 'head_menu_button' href="/salesman_list/">Продавцы</a></div>
+
+      {% if user.is_authenticated %}
+            <div><a class = 'head_menu_button' href="/basket/">Корзина ({% count_products_in_basket user.id %})</a></div>
+            <div>
+                <a class = 'head_menu_button' href="{% url 'users:logout' %}">
+                    <img class="user_img" src="{% static 'image/user_img.png' %}">
+                </a>
+            </div>
+      {% else %}
+            <div class="auth_buttons">
+                <a class='head_menu_button no-padding-right' href="{% url 'users:login' %}">Войти|</a>
+                <a class='head_menu_button no-padding-left' href="{% url 'users:register' %}">Регистрация</a>
+            </div>
+      {% endif %}
+
+    </div>
+
+    <h1 class="title_header">{% block list_name %} {% endblock %}</h1>
+
+    {% block info %}{% endblock %}
+
+    <div class="main_window_menu">
+        <ul class="main_list">
+            {% block list %}
+            {% endblock %}
+        </ul>
+    </div>
+    <footer>
+        <hr color="black">
+        <div>
+            <a href="">О нас</a>
+            <br>
+            <a href="">Связаться с нами</a>
+            <br>
+            <a href="">Помощь</a>
+            <h3>SHIMA STORE</h3>
+            <h4>Общество с ограниченной ответственностью</h4>
+            <p>Юридический адрес: г. Санкт-Петербург, ул. Чкаловская, д.17, кв.35</p>
+        </div>
+    </footer>
+</body>
+</html>
