@@ -1,0 +1,577 @@
+body, html {
+    width: 100%;
+    height: 100%;
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-image: linear-gradient(180deg, #fff, grey  15%, black);
+    color: white;
+    text-align: center;
+}
+
+.main_menu_buttons_block {
+    position: fixed; /* Фиксированное положение */
+    top: 0; /* Расположение от верхней части окна */
+    left: 0; /* Расположение от левой части окна */
+    width: 100%; /* Ширина панели на всю ширину окна */
+    border: 1px solid #333;
+    box-shadow: 8px 8px 5px #444;
+    background-image: linear-gradient(180deg, black, grey  40%, #fff);
+    overflow: hidden;
+    z-index: 1000; /* Устанавливаем z-index для расположения над другими элементами */
+    display: flex; /* Используем flexbox для выравнивания содержимого по горизонтали */
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Тень для эффекта поднятия */
+    z-index: 1000; /* Устанавливаем z-index для расположения над другими элементами */
+    display: flex; /* Используем flexbox для выравнивания содержимого по горизонтали */
+    padding: 10px; /* Отступы внутри блока */
+}
+
+.main_menu_buttons_block div {
+    flex-grow: 0; /* Заставляем кнопки занимать равное пространство */
+    margin: 0 5px; /* Добавляем отступы между кнопками для разделения */
+    padding: 10px; /* Отступы внутри кнопок */
+    background-color: transparent; /* Цвет фона кнопки */
+}
+
+.head_menu_button {
+    text-align: center; /* Центрируем текст в кнопках */
+    text-decoration: none; /* Убираем подчеркивание у ссылок */
+    color: #f2f2f2; /* Цвет текста */
+    transition: background-color 0.3s; /* Плавный эффект изменения цвета фона */
+    font-size: 20px;
+}
+
+.head_menu_button:hover {
+    color: #474343; /* Цвет текста при наведении */
+}
+
+.auth_buttons {
+    display: flex; /* Используем flexbox для выравнивания кнопок аутентификации по горизонтали */
+    justify-content: flex-end; /* Выравниваем кнопки по правому краю (можно изменить на center или flex-start) */
+
+}
+
+.no-padding-right {
+    padding-right: 0; /* Сброс отступа справа */
+}
+
+/* Убираем левый отступ для кнопки "Регистрация" */
+.no-padding-left {
+    padding-left: 0; /* Сброс отступа слева */
+}
+
+/*
+.main_menu_buttons_block {
+    width: 100%;
+    height: 45px;
+    border: 1px solid #333;
+    box-shadow: 8px 8px 5px #444;
+    padding: 8px 22px;
+    padding-left: 1px;
+    padding-right: 1px;
+    background-image: linear-gradient(180deg, black, grey  40%, #fff);
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+ }
+
+.head_menu_button {
+    width: 15%;
+    height: 50%;
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+.head_menu_button:hover {
+    color: #474343;
+}
+*/
+.head_menu_button.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+/* Строка поиска */
+#search_line {
+    width: 50%;
+    height: 35px;
+    border: 3px solid black;
+    border-radius: 7px;
+}
+
+/* Окно товара */
+.product-wrapper {
+	display: block;
+	width: 100%;
+	float: left;
+	transition: width .2s;
+
+}
+
+@media only screen and (min-width: 650px) {
+	.product-wrapper {
+		width: 50%;
+		height: 50%;
+	}
+}
+
+@media only screen and (min-width: 868px) {
+	.product-wrapper {
+		width: 25%;
+		height: 25%;
+	}
+}
+
+@media only screen and (min-width: 1300px) {
+	.product-wrapper {
+		width: 16%;
+		height: 16%;
+	}
+}
+
+.product {
+	display: block;
+	position: relative;
+	background: #fff;
+	margin: 10px;
+	text-decoration: none;
+	color: #474747;
+	z-index: 0;
+	width: 200px;
+	text-align: center;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.product img {
+  border-radius: 7px;
+  position: center;
+  min-width: 200px;
+  max-width: 200px;
+  min-height: 200px;
+  max-height: 200px;
+}
+
+.product h2 {
+  text-overflow: ellipsis;
+  margin: 10px 0;
+  animation: marquee 15s infinite linear;
+}
+
+.product p {
+  color: red;
+  font-size: 20px;
+  margin: 5px 0;
+}
+
+.user_img {
+    max-width:34px;
+    max-height:34px;
+    position: center;
+    filter: invert(100%);
+}
+
+.user_img:hover {
+    max-width:34px;
+    max-height:34px;
+    position: center;
+    filter: invert(20%);
+}
+
+/* Добавление товара в корзину */
+
+.disabled_button {
+  display: block;
+  padding: 10px;
+  background-color: grey;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  width: 100%;
+  height: 100%;
+}
+
+.add_product_to_basket {
+  display: block;
+  padding: 10px;
+  background-color: black;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  width: 100%;
+  height: 100%;
+}
+
+.add_product_to_basket:hover {
+  cursor: pointer;
+  display: block;
+  padding: 10px;
+  background-color: #474343;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  width: 100%;
+  height: 100%;
+}
+
+.add_product_to_basket:active {
+  display: block;
+  padding: 10px;
+  background-color: #858383;
+  color: black;
+  text-decoration: none;
+  border-radius: 8px;
+  width: 100%;
+  height: 100%;
+}
+
+/* Ссылка на товар */
+
+.product_detail_link {
+  display: block;
+  padding: 10px;
+  background-color: #fc0000;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  border: 0px solid #fff;
+  margin-bottom: 3px;
+}
+
+.product_detail_link:hover {
+  display: block;
+  padding: 10px;
+  background-color: #a81111;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+}
+
+.product_detail_link:active {
+  display: block;
+  padding: 10px;
+  background-color: #b57979;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+}
+
+/* Удаление объекта из корзины */
+
+.delete_product {
+  display: block;
+  padding: 10px;
+  background-color: red;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  border: 0px solid #fff;
+  width: 100%;
+  height: 100%;
+}
+
+.delete_product:hover {
+  cursor: pointer;
+  display: block;
+  padding: 10px;
+  background-color: #a81111;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  width: 100%;
+  height: 100%;
+}
+
+.delete_product:active {
+  display: block;
+  padding: 10px;
+  background-color: #b57979;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  width: 100%;
+  height: 100%;
+}
+
+/* Изменение количества товаров в корзине */
+
+.number {
+	display: inline-block;
+	position: relative;
+	width: 80%;
+}
+.number input[type="number"] {
+	display: block;
+	height: 38px;
+	line-height: 32px;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	border-radius: 10px;
+	border: 0px;
+	text-align: center;
+	-moz-appearance: textfield;
+	-webkit-appearance: textfield;
+	appearance: textfield;
+}
+.number input[type="number"]::-webkit-outer-spin-button,
+.number input[type="number"]::-webkit-inner-spin-button {
+	display: none;
+}
+.number-minus {
+	position: absolute;
+	background: black;
+	color: white;
+	top: 1px;
+	left: 1px;
+	bottom: 1px;
+	width: 40px;
+	padding: 0;
+	display: block;
+	text-align: center;
+	border: none;
+	border-right: 1px solid #ddd;
+	border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+	font-size: 16px;
+	font-weight: 600;
+}
+.number-plus {
+	position: absolute;
+	background: black;
+	color: white;
+	top: 1px;
+	right: 1px;
+	bottom: 1px;
+	width: 40px;
+	padding: 0;
+	display: block;
+	text-align: center;
+	border: none;
+	border-left: 1px solid #ddd;
+	border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+	border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+	font-size: 16px;
+	font-weight: 600;
+}
+
+.number-minus:hover {
+    cursor: pointer;
+    background: white;
+	color: black;
+	border: 1px solid grey;
+}
+
+.number-plus:hover {
+    cursor: pointer;
+    background: white;
+	color: black;
+	border: 1px solid grey;
+}
+
+@keyframes marquee {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX(-50%);
+        }
+    }
+
+/* Общие стили */
+.login_form {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Стили для полей */
+.form-input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Чтобы padding не влиял на общую ширину */
+    font-size: 1em;
+}
+
+.form-input:focus {
+  border-color: black; /* Меняем цвет при фокусе */
+    outline: none; /* Убираем дефолтный аутлайн фокуса */
+}
+
+/* Стили для label */
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Стили для абзацев, в которых оборачиваются поля */
+.p_login {
+    margin-bottom: 15px; /* Увеличиваем отступ от параграфов, что бы между полями было расстояние*/
+}
+
+/* Стили для кнопки */
+.login_button {
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+    display: block;
+    width: 100%;
+}
+
+.login_button:hover {
+    background-color: #474343;
+}
+
+/* Стили для ссылок */
+/*a {*/
+/*    display: block;*/
+/*    margin-top: 10px;*/
+/*    text-align: center;*/
+/*}*/
+
+/* Выравнивание и другие дополнительные стили (можете убрать) */
+.login_form, .login_button {
+    text-align: center;
+}
+
+.title_header {
+    position: center;
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.basket_product {
+	display: flex;
+}
+
+.basket_product_text {
+    padding-left: 50px;
+	display: block;
+}
+
+
+.basket_product img {
+  border-radius: 7px;
+  position: center;
+  min-width: 200px;
+  max-width: 200px;
+  min-height: 200px;
+  max-height: 200px;
+}
+
+.basket_product h2 {
+  text-overflow: ellipsis;
+  margin: 10px 0;
+  animation: marquee 15s infinite linear;
+}
+
+.basket_product p {
+  color: #474343;
+  font-size: 20px;
+  margin: 5px 0;
+}
+
+
+
+
+.search_form {
+    position: center;
+    text-align: center;
+    display: flex; /* Располагаем элементы в строку */
+    align-items: center; /* Выравниваем элементы по вертикали */
+    margin-bottom: 20px; /* Отступ снизу формы */
+    margin-left: 35%;
+}
+
+    /* Стиль для текстового поля поиска */
+
+    /*
+.search_line {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 10px;
+    font-size: 16px;
+    flex-grow: 1;
+}
+*/
+
+/* Стиль для кнопки поиска */
+.search_button {
+    padding: 10px 20px; /* Отступы внутри кнопки */
+    background-color: black;
+    color: white;
+    border: none; /* Убираем границу */
+    border-radius: 95px; /* Закругление углов */
+    cursor: pointer; /* Меняем курсор на указатель */
+    font-size: 20px; /* Размер шрифта */
+    transition: background-color 0.1s ease; /* Плавный переход цвета фона */
+    height: 50px;
+    width: 110px;
+}
+
+/* Стиль для кнопки при наведении */
+.search_button:hover {
+    background-color: #474343;
+
+}
+
+
+.search_line {
+    position:flex;
+    display: block;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    width: 40%;
+    height: 50px;
+    box-sizing: border-box;
+    margin-right: 10px;
+    font-size: 20px;
+    flex-grow: 0;
+}
