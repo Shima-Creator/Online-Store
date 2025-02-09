@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Аутентификация</title>
+</head>
+<body>
+    <h1>Аутентификация</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Войти</button>
+    </form>
+    <a href="/product_list/">Зарегистрироваться</a>
+</body>
+</html>

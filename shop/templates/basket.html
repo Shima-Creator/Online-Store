@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %} Корзина {% endblock %}
+{% block list_name %} Корзина: {% endblock %}
+<ul>
+    {% block list %}
+        {% for product in basket_products %}
+                    <li class="product-wrapper">
+                        <div class="product">
+                            <img class="product-photo" src="{{ product.product.photo.url }}" alt='No photo.'/>
+                            <h2>{{ product.product.name }}</h2>
+                            <p>{{ product.product.price }} руб.</p>
+                            <p>Количество: {{ product.quantity }} шт.</p>
+        <!--                    <input name="productCount" type="number" id="col" value="{{ product.quantity }}">-->
+                                <div class="row">
+                                    <form method="POST" action="{% url 'update_quantity' %}">
+                                        {% csrf_token %}
+                                        <div class="number">
+                                            <button class="number-minus" type="submit" name="change" value="-1">-</button>
+                                            <input type="hidden" name="product_id" value="{{ product.id }}">
+                                            <input type="number" name="quantity" value="{{ product.quantity }}" min="0" readonly>
+                                            <button class="number-plus" type="submit" name="change" value="1">+</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            <a class='product_detail_link' href="/product_detail/{{ product.product.id }}">Узнать больше</a>
+                            <form method="POST" action="{% url 'delete_product' product.id %}">
+                               {% csrf_token %}
+                               <button class="delete_product" type="submit">Удалить из корзины</button>
+                            </form>
+                        </div>
+                    </li>
+        {% endfor %}
+    {% endblock %}
+</ul>
+    {% block info %}
+        {% if sum is not None %}
+            <h3>Общее количество товаров: {{ sum }}</h3>
+        {% else %}
+            <h3>Общее количество товаров: 0</h3>
+    {% endif %}
+    <h3>Общая сумма товаров: {{ total_price }} руб.</h3>
+{% endblock %}

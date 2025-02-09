@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %} Список продуктов {% endblock %}
+{% block list_name %} Список продуктов по запросу {% endblock %}
+
+    <div>
+        <ul>
+            {% block list %}
+                {{% if products %}
+                    <ul>
+                        {% for product in products %}
+                            <li class="product-wrapper">
+        <!--                        <a class="product"  href="/product_detail/{{ product.name }}"><img class="product-photo" src="{{ product.photo.url }}" alt='No photo.'/>-->
+                                <div class="product">
+                                    <img class="product-photo" src="{{ product.photo.url }}" alt='No photo.'/>
+                                    <h2>{{ product.name }}</h2>
+                                    <p>{{ product.price }} руб.</p>
+                                    <a class='product_detail_link' href="/product_detail/{{ product.id }}">Узнать больше</a>
+                                    <form method="POST" action="{% url 'add_product' product.id %}">
+                                        {% csrf_token %}
+                                        <button class="add_product_to_basket" type="submit">В корзину</button>
+                                    </form>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Продукты не найдены.</p>
+                {% endif %}
+            {% endblock %}
+        </ul>
+    </div>
+

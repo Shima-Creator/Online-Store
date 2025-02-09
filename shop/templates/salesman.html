@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %} Продавец: {{ shop }} {% endblock %}
+{% block list_name %} Продавец: {% endblock %}
+
+{% block info %}
+    <h1>{{ shop }}</h1>
+    <p>{{ salesman.description }}</p>
+    <hr>
+{% endblock %}
+
+<div>
+    {% block list %}
+        {% for product in products %}
+            <li class="product-wrapper">
+                <div class="product">
+                    <img class="product-photo" src="{{ product.photo.url }}" alt='No photo.'/>
+                    <h2>{{ product.name }}</h2>
+                    <p>{{ product.price }} руб.</p>
+                    <a class='product_detail_link' href="/product_detail/{{ product.id }}">Узнать больше</a>
+                    <form method="POST" action="{% url 'add_product' product.id %}">
+                        {% csrf_token %}
+                        {% if user.is_authenticated %}
+                            <button class="add_product_to_basket" type="submit">В корзину</button>
+                        {% else %}
+                            <button class="disabled_button" disabled>В корзину</button>
+                        {% endif %}
+                    </form>
+                </div>
+            </li>
+        {% endfor %}
+    {% endblock %}
+
+</div>

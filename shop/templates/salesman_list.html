@@ -1,0 +1,10 @@
+{% extends "product_list.html" %}
+{% block title %} Продавцы {% endblock %}
+{% block list_name %} Продавцы: {% endblock %}
+<ul>
+    {% block list %}
+        {% for salesman in salesmans %}
+            <li><a href="/salesman/{{ salesman.shop }}">{{ salesman.shop }}</a></li>
+        {% endfor %}
+    {% endblock %}
+</ul>

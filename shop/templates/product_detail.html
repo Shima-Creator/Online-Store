@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} {{ current_product.name }} {% endblock %}
+
+    {% block info %}
+        <div class="basket_product">
+            <p><img src="{{ current_product.photo.url }}" width="100" height="111"/></p>
+            <div class="basket_product_text">
+                <h1>{{ current_product.name }}</h1>
+                <p>{{ current_product.description }}</p>
+                <p>Цена: {{ current_product.price }} руб.</p>
+                <p>Категория: {{ current_product.subcategory.name }}</p>
+
+                <form method="POST" action="{% url 'add_product' product.id %}">
+                    {% csrf_token %}
+                    {% if user.is_authenticated %}
+                        <button class="add_product_to_basket" type="submit">В корзину</button>
+                    {% else %}
+                        <button class="disabled_button" disabled>В корзину</button>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    {% endblock %}
+
+
+

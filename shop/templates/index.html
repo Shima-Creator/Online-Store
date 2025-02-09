@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %} Домашняя страница {% endblock %}
+{% block list_name %} Домашняя страница: {% endblock %}
+<body>
+{% block info %}
+    <h1>Make your choise</h1>
+    <a href="/create_order/"><input type='submit' value="Клиент"></a>
+    <a href="/add_product/"><input type='submit' value="Продавец"></a>
+{% endblock %}
+
+</body>
+</html>
