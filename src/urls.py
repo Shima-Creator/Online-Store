@@ -17,6 +17,7 @@ Including another URLconf
 from debug_toolbar.toolbar import debug_toolbar_urls
 
 from shop import views
+
 from django.contrib import admin
 from django.conf import settings
 from django.urls import path, include
