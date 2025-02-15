@@ -82,8 +82,6 @@ class Command(BaseCommand):
 
         seeder.execute()
 
-        ########################################################
-
         fake = Faker('ru_RU')
 
         for _ in range(count):

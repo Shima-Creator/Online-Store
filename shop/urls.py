@@ -1,12 +1,5 @@
-from itertools import product
-
-from pygments.lexer import include
-
 from shop import views
-from django.contrib import admin
-from django.conf import settings
 from django.urls import path, include
-from django.conf.urls.static import static
 
 
 url_lists = [
@@ -28,11 +21,6 @@ url_jsons = [
     path('api/basket/<int:pk>', views.BasketAPIView.as_view(), name='json_basket'),
 ]
 
-url_orders = [
-    # path('create_order/', views.CreateOrderView.as_view(), name='create_order'),
-    # path('order_success/', views.OrderSuccessView.as_view(), name='order_success'),
-]
-
 url_products = [
     path('search/', views.search_product, name='search_product'),
     path('update-quantity/', views.add_quantity_basket_product, name='update_quantity'),
@@ -48,7 +36,6 @@ urlpatterns = [
     path('basket/', views.BasketView.as_view(), name='basket'),
     path('salesman/<str:shop>', views.SalesmanView.as_view(), name='salesman'),
     path('', include(url_lists)),
-    path('', include(url_orders)),
     path('', include(url_products)),
     path('', include(url_jsons)),
 ]
