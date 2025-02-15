@@ -1,16 +1,10 @@
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.views import LoginView, LogoutView
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
+
+from django.urls import reverse
 from django.shortcuts import render
-from django.views import View
-from django.urls import reverse, reverse_lazy
-from django.views.generic import CreateView
-from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
 from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
+
 
 from .forms import LoginUserForm, RegisterUserForm
 

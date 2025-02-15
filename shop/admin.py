@@ -20,7 +20,6 @@ class SubCategoriesAdmin(admin.ModelAdmin):
     search_fields = ['name']
     list_filter = ['category']
     list_per_page = 10
-# admin.site.register(Category, CategoryAdmin)
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
@@ -47,7 +46,4 @@ class SalesmanAdmin(admin.ModelAdmin):
 class BasketAdmin(admin.ModelAdmin):
     list_display = ['username', 'product', 'quantity']
     list_display_links = ['username']
-    # list_editable = ['country', 'category', 'description']
-    # search_fields = ['shop']
-    # list_filter = ['shop', 'country', 'category']
     list_per_page = 10

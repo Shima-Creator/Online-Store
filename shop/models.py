@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models import Sum
 from django.utils.timezone import now
 
 
@@ -81,42 +80,6 @@ class Product(BaseModel):
     def __str__(self):
         return self.name
 
-
-# class Client(BaseModel):
-#     first_name = models.CharField(max_length=255, verbose_name='Имя')
-#     last_name = models.CharField(max_length=255, verbose_name='Фамилия')
-#     email = models.EmailField(unique=True)
-#     phone = models.CharField(max_length=20, blank=True, verbose_name='Телефон')
-#     address = models.TextField(blank=True, verbose_name='Адрес')
-#     # password = models.CharField(verbose_name='Пароль', max_length=100)
-#
-#     class Meta:
-#         verbose_name = 'Покупатель'
-#         verbose_name_plural = 'Покупатели'
-#
-#     def __str__(self):
-#         return f"{self.first_name}{self.last_name}"
-
-
-# class Order(BaseModel):
-#     client = models.ForeignKey(Client, related_name='orders', on_delete=models.CASCADE)
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     updated_at = models.DateTimeField(auto_now=True)
-#     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
-#     is_paid = models.BooleanField(default=False)
-#
-#     def __str__(self):
-#         return f"Order {self.id} by {self.client}"
-
-
-# class OrderItem(BaseModel):
-#     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
-#     product = models.ForeignKey(Product, related_name='order_items', on_delete=models.CASCADE)
-#     quantity = models.PositiveIntegerField()
-#     price = models.DecimalField(max_digits=10, decimal_places=2)
-#
-#     def __str__(self):
-#         return f"{self.quantity} of {self.product.name} in Order {self.order.id}"
 
 #The model with salesmans
 class Salesman(models.Model):

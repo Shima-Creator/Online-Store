@@ -1,30 +1,16 @@
-from audioop import reverse
-from http.client import responses
-from itertools import product
-from lib2to3.fixes.fix_input import context
-from tkinter.font import names
 
-
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.views import LoginView
-from django.core.serializers import serialize
 from django.db.models import Sum, Q
-from django.http import HttpResponseNotFound, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from django.template.context_processors import request
-from django.urls import reverse_lazy
+
 from django.views import View
 from django.views.generic import ListView
-from django.views.generic import DetailView, CreateView, UpdateView
+from django.views.generic import DetailView
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED
 from rest_framework.views import APIView
-from unicodedata import category
 
 from shop.models import Product,  Salesman, Category, SubCategory, Basket
-from .forms import AddProductForm
 from .serializers import CategorySerializer, SubCategorySerializer, ProductSerializer, SalesmanSerializer, \
     BasketSerializer
 from .utils import SalesmanMixin
