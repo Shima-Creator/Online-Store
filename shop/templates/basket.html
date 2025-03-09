@@ -1,10 +1,25 @@
 {% extends "base.html" %}
 {% block title %} Корзина {% endblock %}
 {% block list_name %} Корзина: {% endblock %}
-<ul>
+
+    {% block info %}
+        <form method="POST">
+            {% csrf_token %}
+            <button class="pay_basket" type="submit">Оплатить</button>
+        </form>
+        {% if sum is not None %}
+            <h3>Общее количество товаров: {{ sum }}</h3>
+        {% else %}
+            <h3>Общее количество товаров: 0</h3>
+        {% endif %}
+             <h3>Общая сумма товаров: {{ total_price }} руб.</h3>
+        <hr>
+    {% endblock %}
+
     {% block list %}
         {% for product in basket_products %}
                     <li class="product-wrapper">
+                        <input type="checkbox" id="active" name="active" value="true">
                         <div class="product">
                             <img class="product-photo" src="{{ product.product.photo.url }}" alt='No photo.'/>
                             <h2>{{ product.product.name }}</h2>
@@ -29,14 +44,10 @@
                             </form>
                         </div>
                     </li>
+
         {% endfor %}
+
+
+
     {% endblock %}
-</ul>
-    {% block info %}
-        {% if sum is not None %}
-            <h3>Общее количество товаров: {{ sum }}</h3>
-        {% else %}
-            <h3>Общее количество товаров: 0</h3>
-    {% endif %}
-    <h3>Общая сумма товаров: {{ total_price }} руб.</h3>
-{% endblock %}
+
