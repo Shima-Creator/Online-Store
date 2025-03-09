@@ -1,6 +1,10 @@
 body, html {
     width: 100%;
     height: 100%;
+    margin: auto;
+    overflow-x: hidden;
+    padding: 0;
+    margin-bottom: 220px;
 }
 
 footer {
@@ -8,9 +12,20 @@ footer {
     left: 0;
     bottom: 0;
     width: 100%;
+    height: 220px;
     background-image: linear-gradient(180deg, #fff, grey  15%, black);
     color: white;
+
+
+    padding-left: 10px;
+    padding-top: 0px;
+    padding-bottom: 0px;
     text-align: center;
+}
+
+footer .div {
+    display: block;
+    unicode-bidi: isolate;
 }
 
 .main_menu_buttons_block {
@@ -54,7 +69,6 @@ footer {
 .auth_buttons {
     display: flex; /* Используем flexbox для выравнивания кнопок аутентификации по горизонтали */
     justify-content: flex-end; /* Выравниваем кнопки по правому краю (можно изменить на center или flex-start) */
-
 }
 
 .no-padding-right {
@@ -66,40 +80,6 @@ footer {
     padding-left: 0; /* Сброс отступа слева */
 }
 
-/*
-.main_menu_buttons_block {
-    width: 100%;
-    height: 45px;
-    border: 1px solid #333;
-    box-shadow: 8px 8px 5px #444;
-    padding: 8px 22px;
-    padding-left: 1px;
-    padding-right: 1px;
-    background-image: linear-gradient(180deg, black, grey  40%, #fff);
-    overflow: hidden;
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
- }
-
-.head_menu_button {
-    width: 15%;
-    height: 50%;
-    float: left;
-    color: #f2f2f2;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 20px;
-}
-
-.head_menu_button:hover {
-    color: #474343;
-}
-*/
 .head_menu_button.active {
     background-color: #4CAF50;
     color: white;
@@ -115,47 +95,47 @@ footer {
 
 /* Окно товара */
 .product-wrapper {
-	display: block;
-	width: 100%;
-	float: left;
-	transition: width .2s;
+  display: block;
+  width: 100%;
+  float: left;
+  transition: width .2s;
 
 }
 
 @media only screen and (min-width: 650px) {
-	.product-wrapper {
-		width: 50%;
-		height: 50%;
-	}
+  .product-wrapper {
+    width: 50%;
+    height: 50%;
+  }
 }
 
 @media only screen and (min-width: 868px) {
-	.product-wrapper {
-		width: 25%;
-		height: 25%;
-	}
+  .product-wrapper {
+    width: 25%;
+    height: 25%;
+  }
 }
 
 @media only screen and (min-width: 1300px) {
-	.product-wrapper {
-		width: 16%;
-		height: 16%;
-	}
+  .product-wrapper {
+    width: 16%;
+    height: 16%;
+  }
 }
 
 .product {
-	display: block;
-	position: relative;
-	background: #fff;
-	margin: 10px;
-	text-decoration: none;
-	color: #474747;
-	z-index: 0;
-	width: 200px;
-	text-align: center;
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
+  display: block;
+  position: relative;
+  background: #fff;
+  margin: 10px;
+  text-decoration: none;
+  color: #474747;
+  z-index: 0;
+  width: 200px;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .product img {
@@ -311,82 +291,82 @@ footer {
 /* Изменение количества товаров в корзине */
 
 .number {
-	display: inline-block;
-	position: relative;
-	width: 80%;
+  display: inline-block;
+  position: relative;
+  width: 80%;
 }
 .number input[type="number"] {
-	display: block;
-	height: 38px;
-	line-height: 32px;
-	width: 100%;
-	padding: 0;
-	margin: 0;
-	box-sizing: border-box;
-	border-radius: 10px;
-	border: 0px;
-	text-align: center;
-	-moz-appearance: textfield;
-	-webkit-appearance: textfield;
-	appearance: textfield;
+  display: block;
+  height: 38px;
+  line-height: 32px;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 0px;
+  text-align: center;
+  -moz-appearance: textfield;
+  -webkit-appearance: textfield;
+  appearance: textfield;
 }
 .number input[type="number"]::-webkit-outer-spin-button,
 .number input[type="number"]::-webkit-inner-spin-button {
-	display: none;
+  display: none;
 }
 .number-minus {
-	position: absolute;
-	background: black;
-	color: white;
-	top: 1px;
-	left: 1px;
-	bottom: 1px;
-	width: 40px;
-	padding: 0;
-	display: block;
-	text-align: center;
-	border: none;
-	border-right: 1px solid #ddd;
-	border-top-left-radius: 10px;
+  position: absolute;
+  background: black;
+  color: white;
+  top: 1px;
+  left: 1px;
+  bottom: 1px;
+  width: 40px;
+  padding: 0;
+  display: block;
+  text-align: center;
+  border: none;
+  border-right: 1px solid #ddd;
+  border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
-	font-size: 16px;
-	font-weight: 600;
+  font-size: 16px;
+  font-weight: 600;
 }
 .number-plus {
-	position: absolute;
-	background: black;
-	color: white;
-	top: 1px;
-	right: 1px;
-	bottom: 1px;
-	width: 40px;
-	padding: 0;
-	display: block;
-	text-align: center;
-	border: none;
-	border-left: 1px solid #ddd;
-	border-top-left-radius: 10px;
+  position: absolute;
+  background: black;
+  color: white;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  width: 40px;
+  padding: 0;
+  display: block;
+  text-align: center;
+  border: none;
+  border-left: 1px solid #ddd;
+  border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
-	border-top-right-radius: 10px;
+  border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
-	font-size: 16px;
-	font-weight: 600;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .number-minus:hover {
     cursor: pointer;
     background: white;
-	color: black;
-	border: 1px solid grey;
+  color: black;
+  border: 1px solid grey;
 }
 
 .number-plus:hover {
     cursor: pointer;
     background: white;
-	color: black;
-	border: 1px solid grey;
+  color: black;
+  border: 1px solid grey;
 }
 
 @keyframes marquee {
@@ -410,6 +390,7 @@ footer {
 }
 
 /* Стили для полей */
+
 .form-input {
     display: block;
     width: 100%;
@@ -474,26 +455,14 @@ label {
     text-align: center;
 }
 
-
-
-
-
-
-
-
-
-
-
-
 .basket_product {
-	display: flex;
+  display: flex;
 }
 
 .basket_product_text {
     padding-left: 50px;
-	display: block;
+  display: block;
 }
-
 
 .basket_product img {
   border-radius: 7px;
@@ -513,11 +482,15 @@ label {
 .basket_product p {
   color: #474343;
   font-size: 20px;
-  margin: 5px 0;
+  margin: 50px;
+  padding: 20px;
 }
 
-
-
+.seller_product p {
+  color: #474343;
+  font-size: 20px;
+  margin: 5px 0;
+}
 
 .search_form {
     position: center;
@@ -558,9 +531,7 @@ label {
 /* Стиль для кнопки при наведении */
 .search_button:hover {
     background-color: #474343;
-
 }
-
 
 .search_line {
     position:flex;
@@ -575,3 +546,109 @@ label {
     font-size: 20px;
     flex-grow: 0;
 }
+
+/* Стили для формы регистрации */
+.registration-container {
+    width: 80%; /* Занимает 80% ширины контейнера */
+    max-width: 600px; /* Максимальная ширина 600px */
+    margin: 20px auto; /* Отступ сверху и снизу 20px, авто-отступ слева и справа для центрирования */
+    padding: 20px; /* Внутренний отступ 20px */
+    border: 1px solid #ccc; /* Тонкая серая рамка */
+    border-radius: 5px; /* Скругленные углы */
+    background-color: #f9f9f9; /* Светло-серый фон */
+}
+
+.login_form {
+    display: flex;
+    flex-direction: column; /* Располагает элементы формы в столбец */
+}
+
+.login_form label {
+    margin-bottom: 5px; /* Отступ снизу для меток */
+    font-weight: bold; /* Жирное начертание для меток */
+}
+
+.login_form input[type="text"],
+.login_form input[type="email"],
+.login_form input[type="password"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Чтобы padding не влиял на общую ширину */
+    font-size: 1em;
+}
+
+.login_form input[type="checkbox"] {
+    margin-right: 5px; /* Отступ справа для чекбоксов */
+}
+
+.form-error {
+    color: red; /* Красный цвет для ошибок */
+    margin-bottom: 10px; /* Отступ снизу для блоков с ошибками */
+}
+
+.login_button:hover {
+    background-color: #474343;
+}
+
+.p_login {
+    margin-bottom: 10px;
+}
+
+#seller_fields,
+#buyer_fields {
+    margin-top: 20px; /* Отступ сверху для разделов продавца и покупателя */
+    padding: 10px; /* Внутренний отступ для разделов продавца и покупателя */
+    border: 1px solid #eee; /* Светлая рамка */
+    border-radius: 4px; /* Скругленные углы */
+    background-color: #fafafa; /* Светло-серый фон */
+}
+
+#seller_fields h3,
+#buyer_fields h3 {
+    margin-bottom: 15px; /* Отступ снизу для заголовков разделов */
+}
+
+.add_product_shop_button {
+  display: inline-block;
+  padding: 10px 15px;
+  background: #f2f2f2;
+  border: 1px solid #000; /* В ожидании набирающего популярность темного режима, рамка черного цвета */
+  color: #333;
+  text-decoration: none;
+  text-align: center;
+}
+
+.add_product_shop_button:hover, .add_product_shop_button:focus {
+  background: #e2e2f2; /* Эффект при наведении — дополнительное оформление */
+}
+
+.pay_basket {
+     position:center;
+     width: 80%;
+     height: 50px;
+     margin-left: 10%;
+     margin-right: 10%;
+     padding: 10px 15px;
+     background: red;
+     border: 1px solid white; /* В ожидании набирающего популярность темного режима, рамка черного цвета */
+     border-radius: 8px;
+     font-size: 18px;
+     color: white;
+     text-align: center;
+}
+
+.pay_basket:hover, .pay_basket:focus {
+  background: #a81111; /* Эффект при наведении — дополнительное оформление */
+}
+
+#active {
+    width: 30px;
+    height: 30px;
+    background: black;
+}
+
+
