@@ -14,8 +14,15 @@
       <div><a class = 'head_menu_button' href="/categories_list/">Категории</a></div>
       <div><a class = 'head_menu_button' href="/product_list/">Товары</a></div>
       <div><a class = 'head_menu_button' href="/salesman_list/">Продавцы</a></div>
+      {% if user.is_authenticated and user.is_seller == True %}
+            <div><a class = 'head_menu_button' href="/seller_profile/">Профиль</a></div>
+            <div>
+                <a class = 'head_menu_button' href="{% url 'users:logout' %}">
+                    <img class="user_img" src="{% static 'image/user_img.png' %}">
+                </a>
+            </div>
 
-      {% if user.is_authenticated %}
+      {% elif user.is_authenticated and user.is_seller == False %}
             <div><a class = 'head_menu_button' href="/basket/">Корзина ({% count_products_in_basket user.id %})</a></div>
             <div>
                 <a class = 'head_menu_button' href="{% url 'users:logout' %}">
