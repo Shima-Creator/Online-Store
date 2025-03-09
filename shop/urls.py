@@ -1,6 +1,11 @@
 from shop import views
 from django.urls import path, include
 
+url_profile = [
+    path('seller_profile/', views.SellerProfile.as_view(), name='seller_profile'),
+    path('seller_profile/add_product/', views.AddProduct.as_view(), name='add_product'),
+    path('seller_profile/edit_product/<int:id>', views.EditProduct.as_view(), name='edit_product.html'),
+]
 
 url_lists = [
     path('categories_list/', views.CategoriesListView.as_view(), name='categories'),
@@ -27,6 +32,7 @@ url_products = [
     path('product_detail/<int:product_id>', views.ProductView.as_view(), name='product_detail'),
     path('add_product_to_basket/<int:product_id>', views.add_product_to_basket, name='add_product'),
     path('delete_product_from_basket/<int:product_id>', views.delete_product_from_basket, name='delete_product'),
+    path('delete_product_from_shop/<int:product_id>', views.delete_product_from_shop, name='delete_product_shop'),
 ]
 
 urlpatterns = [
@@ -35,6 +41,7 @@ urlpatterns = [
     path('products_by_categories/<str:category>/', views.ProductsByCategoriesView.as_view(), name='products_by_categories_plus'),
     path('basket/', views.BasketView.as_view(), name='basket'),
     path('salesman/<str:shop>', views.SalesmanView.as_view(), name='salesman'),
+    path('', include(url_profile)),
     path('', include(url_lists)),
     path('', include(url_products)),
     path('', include(url_jsons)),
