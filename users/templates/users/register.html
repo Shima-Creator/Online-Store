@@ -4,14 +4,57 @@
 {% block list %}
     <form class="login_form" method="post">
         {% csrf_token %}
+        <input type="hidden" name="is_seller" value="false">
+        <label for="is_seller">Я продавец <input type="checkbox" id="is_seller" name="is_seller" value="true"></label>
+
         <input type="hidden" name="next" value="{{ next }}" />
-        <div class="form-error">{{ form.non_field_errors }}</div>
-        {% for f in form %}
-        <p class="p_login"><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
-        <div class="form-error">{{ f.errors }}</div>
-        {% endfor %}
+        <div class="form-error">{{ user_form.non_field_errors }}</div>
+
+        <div id="user_fields">
+            {% for user in user_form %}
+                <p class="p_login"><label class="form-label">{{user.label}}: </label>{{ user }}</p>
+                <div class="form-error">{{ user.errors }}</div>
+            {% endfor %}
+        </div>
+
+        <div id="buyer_fields" style="display: none;">
+            <h3>Информация о покупателе</h3>
+            {% for buyer in buyer_form %}
+                <p class="p_login"><label class="form-label">{{ buyer.label }}:</label>{{ buyer }}</p>
+                <div class="form-error">{{ buyer_form.non_field_errors }}</div>
+            {% endfor %}
+        </div>
+
+        <div id="seller_fields" style="display: none;">
+            <h3>Информация о продавце</h3>
+            {% for seller in seller_form %}
+                <p class="p_login"><label class="form-label" >{{ seller.label }}:</label>{{ seller }}</p>
+                <div class="form-error">{{ seller.errors }}</div>
+            {% endfor %}
+        </div>
+
         <p ><button class="login_button" type="submit">Регистрация</button></p>
-        <a href="{% url 'users:login' %}">Войти</a>
+        <a href="{% url 'users:login' %}">Авторизация</a>
     </form>
+
+    <script>
+        const isSellerCheckbox = document.getElementById('is_seller');
+        const sellerFields = document.getElementById('seller_fields');
+        const buyerFields = document.getElementById('buyer_fields');
+
+        function toggleFields() {
+            if (isSellerCheckbox.checked) {
+                sellerFields.style.display = 'block';
+                buyerFields.style.display = 'none';
+            } else {
+                sellerFields.style.display = 'none';
+                buyerFields.style.display = 'block';
+            }
+        }
+
+        isSellerCheckbox.addEventListener('change', toggleFields);
+
+        toggleFields();
+    </script>
 
 {% endblock %}
