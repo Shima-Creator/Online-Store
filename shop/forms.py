@@ -1,14 +1,24 @@
 from django import forms
-from .models import Product, Salesman
+
+from users.models import Seller
+from .models import Product, Shop
 
 
 class AddProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['photo','name', 'description', 'shop','stock', 'price']
+        fields = ['photo','name', 'subcategory', 'description', 'stock', 'price']
 
 
-class SalesmanForm(forms.ModelForm):
+class ShopForm(forms.ModelForm):
     class Meta:
-        model = Salesman
-        fields = ['shop', 'country', 'category']
+        model = Shop
+        fields = ['shop_name', 'country', 'category', 'description']
+
+
+class SellerEditForm(forms.ModelForm):
+    class Meta:
+        model = Seller
+        fields = ['profile_pic', 'facebook', 'instagram', 'vk', 'telegram']
+
+
