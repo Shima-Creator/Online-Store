@@ -1,6 +1,9 @@
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils.timezone import now
+
+from users.models import Seller
 
 
 #The abstract model
@@ -8,7 +11,7 @@ class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True, blank=True)
-    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
         abstract = True
@@ -70,7 +73,7 @@ class Product(BaseModel):
     description = models.TextField(verbose_name='Описание')
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена')
     subcategory = models.ForeignKey(SubCategory, related_name='products', on_delete=models.CASCADE, verbose_name='Подкатегория')
-    shop = models.ForeignKey('Salesman', related_name='shops', on_delete=models.CASCADE, verbose_name='Магазин')
+    shop = models.ForeignKey('Shop', related_name='shops', on_delete=models.CASCADE, verbose_name='Магазин')
     stock = models.PositiveIntegerField(verbose_name='В наличии')
 
     class Meta:
@@ -82,8 +85,9 @@ class Product(BaseModel):
 
 
 #The model with salesmans
-class Salesman(models.Model):
-    shop = models.CharField(max_length=100, verbose_name='Продавец')
+class Shop(models.Model):
+    seller = models.OneToOneField(Seller, on_delete=models.CASCADE, related_name='shop')
+    shop_name = models.CharField(max_length=100, verbose_name='Продавец')
     country = models.CharField(max_length=40, verbose_name='Страна')
     category = models.ForeignKey(Category, related_name='product', on_delete=models.CASCADE, verbose_name='Категория')
     description = models.TextField(verbose_name='Описание')
@@ -93,12 +97,12 @@ class Salesman(models.Model):
         verbose_name_plural = 'Продавцы'
 
     def __str__(self):
-        return self.shop
+        return self.shop_name
 
 
 #The model of basket for products
 class Basket(models.Model):
-    username = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь', unique=False)
+    username = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Пользователь', unique=False)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Товары')
     quantity = models.PositiveIntegerField(default=1, verbose_name='Количество')
 
@@ -120,3 +124,14 @@ class Basket(models.Model):
             total_price += (product.quantity * product.product.price)
 
         return total_price
+
+
+class ProductStatus(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Пользователь', unique=False)
+    product = models.OneToOneField(Product, related_name='product', on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=0, verbose_name="Количество")
+    paid = models.BooleanField(default=False, verbose_name='Оплачен')
+    in_delivery = models.BooleanField(default=False, verbose_name='Доставляется')
+    delivered_in_shop = models.BooleanField(default=False, verbose_name='Прибыл в ПВЗ')
+    received_by_the_buyer = models.BooleanField(default=False, verbose_name='Получен покупателем')
+    returned = models.BooleanField(default=False, verbose_name='Возвращен')
