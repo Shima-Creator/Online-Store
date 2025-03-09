@@ -4,7 +4,7 @@
 <ul>
     {% block list %}
         {% for salesman in salesmans %}
-            <li><a href="/salesman/{{ salesman.shop }}">{{ salesman.shop }}</a></li>
+            <li><a href="/salesman/{{ salesman.shop_name }}">{{ salesman.shop_name }}</a></li>
         {% endfor %}
     {% endblock %}
 </ul>

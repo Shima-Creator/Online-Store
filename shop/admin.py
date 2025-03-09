@@ -33,13 +33,13 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ['name', 'description', 'price', 'stock']
     list_per_page = 10
 
-@admin.register(Salesman)
+@admin.register(Shop)
 class SalesmanAdmin(admin.ModelAdmin):
-    list_display = ['shop', 'country','description', 'category']
-    list_display_links = ['shop']
+    list_display = ['shop_name', 'country','description', 'category']
+    list_display_links = ['shop_name']
     list_editable = ['country', 'category', 'description']
-    search_fields = ['shop']
-    list_filter = ['shop', 'country', 'category']
+    search_fields = ['shop_name']
+    list_filter = ['shop_name', 'country', 'category']
     list_per_page = 10
 
 

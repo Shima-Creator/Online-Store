@@ -49,7 +49,7 @@ class SalesmanSerializer(serializers.Serializer):
     category_id = serializers.IntegerField()
 
     def create(self, validated_data):
-        return Salesman.objects.create(**validated_data)
+        return Shop.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
         instance.name = validated_data.get('name', instance.name)

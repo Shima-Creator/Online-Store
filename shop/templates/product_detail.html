@@ -13,7 +13,7 @@
 
                 <form method="POST" action="{% url 'add_product' product.id %}">
                     {% csrf_token %}
-                    {% if user.is_authenticated %}
+                    {% if user.is_authenticated and user.is_seller == False %}
                         <button class="add_product_to_basket" type="submit">В корзину</button>
                     {% else %}
                         <button class="disabled_button" disabled>В корзину</button>
