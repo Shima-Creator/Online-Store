@@ -1,19 +1,18 @@
 from django.db.models import Sum, Q
-from django.http import HttpResponseRedirect, HttpResponseNotFound
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
-from django.template.context_processors import request
 from django.views import View
 from django.views.generic import ListView
-from django.views.generic import DetailView, CreateView, UpdateView
+from django.views.generic import DetailView
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED
 from rest_framework.views import APIView
 from django.urls import reverse
 
-from shop.models import Product,  Shop, Category, SubCategory, Basket
+from shop.models import Product, Shop, Category, SubCategory, Basket, UserOrder, Comments
 from users.models import Seller
-from .forms import ShopForm, SellerEditForm, AddProductForm
+from .forms import ShopForm, SellerEditForm, AddProductForm, BasketUpdateForm, CommentsForm
 from .serializers import CategorySerializer, SubCategorySerializer, ProductSerializer, SalesmanSerializer, \
     BasketSerializer
 from .utils import SalesmanMixin
@@ -24,6 +23,7 @@ class ProductListView(ListView):
     model = Product
     template_name = 'product_list.html'
     context_object_name = 'products'
+    paginate_by = 24
 
 
 class CategoriesListView(ListView):
@@ -71,14 +71,16 @@ class BasketView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['sum'] = Basket.objects.all().filter(username_id=self.request.user.id).aggregate(Sum('quantity'))['quantity__sum']
-        user_basket = Basket.objects.all().filter(username_id=self.request.user.id)
+        context['paid_products'] = UserOrder.objects.filter(user_id = self.request.user.id)
+        context['sum'] = Basket.objects.all().filter(user_id=self.request.user.id).aggregate(Sum('quantity'))['quantity__sum']
+        user_basket = Basket.objects.all().filter(user_id=self.request.user.id)
         total_price = 0
 
         for basket_product in user_basket:
             total_price += (basket_product.quantity * basket_product.product.price)
         context['basket_products'] = user_basket
         context['total_price'] = total_price
+        context['basket_form'] = BasketUpdateForm()
 
         return context
 
@@ -106,14 +108,36 @@ class ProductView(DetailView):
     model = Product
     template_name = 'product_detail.html'
     pk_url_kwarg = 'product_id'
+    form_class = CommentsForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['product_id'] = self.kwargs['product_id']
-        context['current_product'] = Product.objects.all().get(id=self.kwargs['product_id'])
+        context['current_product'] = Product.objects.get(id=self.kwargs['product_id'])
+        context['comments'] = Comments.objects.filter(product_id=self.kwargs['product_id'])
+        context['comment_form'] = CommentsForm()
 
         return context
 
+    def post(self, request, *args, **kwargs):
+        form = CommentsForm(request.POST)
+        product_id = self.kwargs['product_id']
+
+        if form.is_valid():
+            comment = Comments(
+                comment=form.cleaned_data['comment'],  # Replace 'text' with actual field name in form
+                product=get_object_or_404(Product, id=product_id),
+                user=request.user
+            )
+
+            comment.save()
+
+            return redirect('product_detail', product_id=product_id)
+
+        context = self.get_context_data()
+        context['comment_form'] = form
+
+        return render(request, self.template_name, context)
 
 class IndexView(View):
     """Index view"""
@@ -122,19 +146,18 @@ class IndexView(View):
 
 
 class SellerProfile(View):
+    """Страница профиля продавца"""
     def get(self, request):
         seller = Seller.objects.filter(user_id=request.user.id).first()
-        shop = Shop.objects.filter(seller__user_id=request.user.id).first() if seller else None
-        products = Product.objects.filter(shop=shop)
+        shops = Shop.objects.filter(seller__user_id=request.user.id) if seller else None
+        products = Product.objects.filter(shop=shops.first())
 
         seller_form = SellerEditForm(instance=seller) if seller else SellerEditForm()
-        shop_form = ShopForm(instance=shop) if shop else ShopForm()
 
         data = {
             'seller': seller,
             'seller_form': seller_form,
-            'shop': shop,
-            'shop_form': shop_form,
+            'shops': shops,
             'products':products,
         }
 
@@ -142,126 +165,88 @@ class SellerProfile(View):
 
     def post(self, request):
         seller = Seller.objects.get(user_id=request.user.id)
-        shop = Shop.objects.get(seller__user_id=request.user.id)
-        issue = ''
+        shops = Shop.objects.filter(seller__user_id=request.user.id) if seller else None
+        products = Product.objects.filter(shop=shops.first())
+
+        print(request.POST)
 
         if 'delete_photo' in request.POST:
+            seller.profile_pic = None
+            seller.save()
 
-            try:
-                seller.profile_pic = None
-                seller.save()
-
-                return redirect('seller_profile')
-            except Seller.DoesNotExist:
-
-                issue = 'Фото не существует'
+            return redirect('seller_profile')
 
         if 'delete_facebook' in request.POST:
-            try:
-                seller.facebook = None
-                seller.save()
+            seller.facebook = None
+            seller.save()
 
-                return redirect('seller_profile')
-            except Seller.DoesNotExist:
-
-                issue = 'Поле Facebook не задано'
+            return redirect('seller_profile')
 
         if 'delete_instagram' in request.POST:
-            try:
-                seller.instagram = None
-                seller.save()
+            seller.instagram = None
+            seller.save()
 
-                issue = "Успешно удалено"
-                print(issue)
-
-                return redirect('seller_profile')
-            except Seller.DoesNotExist:
-
-                issue = 'Поле Instagram не задано'
+            return redirect('seller_profile')
 
         if 'delete_vk' in request.POST:
-            try:
-                seller.vk = None
-                seller.save()
+            seller.vk = None
+            seller.save()
 
-                return redirect('seller_profile')
-            except Seller.DoesNotExist:
-
-                issue = 'Поле VK не задано'
+            return redirect('seller_profile')
 
         if 'delete_telegram' in request.POST:
-            try:
-                seller.telegram = None
-                seller.save()
+            seller.telegram = None
+            seller.save()
 
-                return redirect('seller_profile')
-            except Seller.DoesNotExist:
-
-                issue = 'Поле Telegram не задано'
-
-            seller = Seller.objects.filter(user_id=request.user.id).first()
-            seller_form = SellerEditForm(instance=seller) if seller else SellerEditForm()
-            shop_form = ShopForm(instance=seller) if shop else ShopForm()
-
-            data = {
-                'seller': seller,
-                'seller_form': seller_form,
-                'shop': shop,
-                'shop_form': shop_form,
-                'issue': issue
-            }
-
-            return render(request, 'seller_profile.html', data)
+            return redirect('seller_profile')
 
         if seller:
             seller_form = SellerEditForm(request.POST, request.FILES, instance=seller)
         else:
             seller_form = SellerEditForm(request.POST)
 
-        if shop:
-            shop_form = ShopForm(request.POST, instance=shop)
-        else:
-            shop_form = ShopForm(request.POST)
-
-        if seller is None and seller_form.is_valid():
-            # Создаем нового Seller только если его нет
-            seller = seller_form.save(commit=False)
-            seller.user = request.user
-            seller.save()
-
-        elif seller and seller_form.is_valid():
-            # Обновляем существующего Seller
-            seller = seller_form.save(commit=False)
-            seller.save()
-
-        if seller and shop is None and shop_form.is_valid():
-            # Создаем новый Shop, только если Seller существует и Shop не существует
-            shop = shop_form.save(commit=False)
-            shop.seller = seller
-            shop.save()
-
-        elif seller and shop and shop_form.is_valid():
-            # Обновляем существующий Shop
-            seller = seller_form.save(commit=False)
-
-            shop = shop_form.save()
+        if seller:
+            if seller_form.is_valid():
+                # Обновляем существующего Seller
+                seller = seller_form.save(commit=False)
+                seller.save()
 
         data = {
             'seller': seller,
             'seller_form': seller_form,
-            'shop': shop,
-            'shop_form': shop_form,
-            'issue': issue
+            'shops': shops,
+            'products': products,
         }
 
         return render(request, 'seller_profile.html', data)
 
 
-class AddProduct(View):
+class AddShop(View):
+    """Добавление магазина"""
     def get(self, request):
+        shop_form = ShopForm()
+        data = {
+            'shop_form':shop_form
+        }
+        return render(request, 'add_shop.html', data)
 
+    def post(self, request):
+        shop_form = ShopForm(request.POST, request.FILES)
+        seller = Seller.objects.get(user_id=request.user.id)
+
+        if shop_form.is_valid():
+            shop = shop_form.save(commit=False)
+            shop.seller = seller
+            shop.save()
+
+            return HttpResponseRedirect(reverse('seller_profile'))
+
+
+class AddProduct(View):
+    """Добавление товара продавцом"""
+    def get(self, request):
         product_form = AddProductForm()
-        print(f"{id=}")
+        
         data = {
             'product_form':product_form
         }
@@ -270,20 +255,20 @@ class AddProduct(View):
 
     def post(self, request):
         product_form = AddProductForm(request.POST, request.FILES)
-        shop = Shop.objects.get(seller__user_id=request.user.id)
-        data = {
-            'product_form': product_form
-        }
+        shops = Shop.objects.filter(seller__user_id=request.user.id)
+        shops_id = []
 
-        if product_form.is_valid():
-            product = product_form.save(commit=False)
-            product.shop = shop
-            product.save()
+        for shop in shops:
+            shops_id.append(shop.id)
+
+        if product_form.is_valid() and int(request.POST.get('shop')) in shops_id:
+            product_form.save()
 
             return HttpResponseRedirect(reverse('seller_profile'))
 
 
 class EditProduct(View):
+    """Изменение продукта продавцом"""
     def get(self, request, id=None):
         product = Product.objects.get(id=id)
         product_form = AddProductForm(instance=product)
@@ -298,18 +283,21 @@ class EditProduct(View):
     def post(self, request, id):
         product = get_object_or_404(Product, id=id)
         product_form = AddProductForm(request.POST, instance=product)
+        shops = Shop.objects.filter(seller__user_id=request.user.id)
+        shops_id = []
 
-        # Проверяем, валидна ли форма
-        if product_form.is_valid():
-            # Сохраняем изменения в существующем объекте
+        for shop in shops:
+            shops_id.append(shop.id)
+
+        if product_form.is_valid() and int(request.POST.get('shop')) in shops_id:
             product_form.save()
             return HttpResponseRedirect(reverse('seller_profile'))
 
-        # Если форма не валидна, возвращаем на страницу редактирования с ошибками
         data = {
             'product_form': product_form,
             'product': product
         }
+
         return render(request, 'edit_product.html', data)
 
 
@@ -481,12 +469,24 @@ class BasketAPIView(APIView):
         return Response(status=status.HTTP_200_OK)
 
 
+class AboutUs(View):
+    """Страница описания магазина"""
+    def get(self, request):
+        return render(request, 'about_us.html')
+
+
+class Connect(View):
+    """Контакты магазина"""
+    def get(self, request):
+        return render(request, 'contacts.html')
+
+
 #Shop Functions
 def add_product_to_basket(request, product_id):
     """Добавление товара в корзину"""
     if request.method == 'POST':
         user = request.user.id
-        basket_item, created = Basket.objects.get_or_create(username_id=user, product_id=product_id)
+        basket_item, created = Basket.objects.get_or_create(user_id=user, product_id=product_id)
 
         if not created:
             basket_item.quantity += 1
@@ -494,8 +494,56 @@ def add_product_to_basket(request, product_id):
 
         return redirect(request.META.get('HTTP_REFERER'))
 
-def buy_product(request, **kwargs):
-    pass
+def buy_product(request):
+    """Покупка товаров из корзины"""
+    user = request.user
+    basket_products = Basket.objects.filter(user_id=user)
+
+    if request.method == 'POST':
+
+        for b_product in basket_products:
+
+            if b_product.active == True:
+
+                paid_product = UserOrder.objects.filter(product_id=b_product.product_id).first()
+
+                if paid_product:
+                    paid_product.quantity += b_product.quantity
+                    b_product.product.stock -= b_product.quantity
+                    paid_product.save()
+
+                else:
+                    UserOrder.objects.get_or_create(user=user, product_id=b_product.product_id, quantity=b_product.quantity, status=UserOrder.Status.PAID)
+                    b_product.product.stock -= b_product.quantity
+
+                b_product.product.save()
+                b_product.delete()
+
+        return redirect(request.META.get('HTTP_REFERER'))
+
+def activate_product(request, product_id):
+    """Выделение предмета из корзины"""
+    basket_item = get_object_or_404(Basket, id=product_id, user=request.user)
+
+    if request.method == 'POST':
+        form = BasketUpdateForm(request.POST)
+        print(request.POST)
+        if form.is_valid():
+            active_prod = form.cleaned_data['active']
+            basket_item.active = active_prod
+            basket_item.save()
+
+            return redirect(request.META.get('HTTP_REFERER'))
+
+def delete_product_from_shop(request, product_id):
+    """Удаление товара продавцом"""
+    if request.method == 'POST':
+
+        shop_product = Product.objects.all().get(id=product_id)
+
+        shop_product.hard_delete()
+
+        return redirect(request.META.get('HTTP_REFERER'))
 
 def delete_product_from_basket(request, product_id):
     """Уменьшение количества товара в корзине"""
@@ -509,16 +557,6 @@ def delete_product_from_basket(request, product_id):
 
         elif basket_product.quantity == 1:
             basket_product.delete()
-
-        return redirect(request.META.get('HTTP_REFERER'))
-
-def delete_product_from_shop(request, product_id):
-    """Уменьшение количества товара в корзине"""
-    if request.method == 'POST':
-
-        shop_product = Product.objects.all().get(id=product_id)
-
-        shop_product.hard_delete()
 
         return redirect(request.META.get('HTTP_REFERER'))
 
