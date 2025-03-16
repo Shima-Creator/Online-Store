@@ -33,6 +33,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ['name', 'description', 'price', 'stock']
     list_per_page = 10
 
+
 @admin.register(Shop)
 class SalesmanAdmin(admin.ModelAdmin):
     list_display = ['shop_name', 'country','description', 'category']
@@ -45,6 +46,6 @@ class SalesmanAdmin(admin.ModelAdmin):
 
 @admin.register(Basket)
 class BasketAdmin(admin.ModelAdmin):
-    list_display = ['username', 'product', 'quantity']
-    list_display_links = ['username']
+    list_display = ['user', 'product', 'quantity']
+    list_display_links = ['user']
     list_per_page = 10

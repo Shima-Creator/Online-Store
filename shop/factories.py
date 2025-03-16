@@ -1,7 +1,6 @@
 import factory
-from django.conf import settings
 from django.contrib.auth.models import User
-from shop.models import Product, SubCategory, Category, Salesman, Basket
+from shop.models import Product, SubCategory, Category, Shop, Basket
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -31,7 +30,7 @@ class SubCategoryFactory(factory.django.DjangoModelFactory):
 
 class SalesmanFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = Salesman
+        model = Shop
 
     name = factory.Sequence(lambda n: f'Salesman {n}')
 
