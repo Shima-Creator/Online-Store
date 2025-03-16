@@ -1,5 +1,4 @@
 from django.conf import settings
-from django.contrib.auth.models import User
 from django.db import models
 from django.utils.timezone import now
 
@@ -84,9 +83,9 @@ class Product(BaseModel):
         return self.name
 
 
-#The model with salesmans
+#The model with shops
 class Shop(models.Model):
-    seller = models.OneToOneField(Seller, on_delete=models.CASCADE, related_name='shop')
+    seller = models.ForeignKey(Seller, on_delete=models.CASCADE, related_name='shop')
     shop_name = models.CharField(max_length=100, verbose_name='Продавец')
     country = models.CharField(max_length=40, verbose_name='Страна')
     category = models.ForeignKey(Category, related_name='product', on_delete=models.CASCADE, verbose_name='Категория')
@@ -102,36 +101,41 @@ class Shop(models.Model):
 
 #The model of basket for products
 class Basket(models.Model):
-    username = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Пользователь', unique=False)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Пользователь', unique=False)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Товары')
     quantity = models.PositiveIntegerField(default=1, verbose_name='Количество')
+    active = models.BooleanField(default=False, verbose_name='Активный')
 
     class Meta:
         verbose_name = 'Корзина'
         verbose_name_plural = 'Корзина'
 
     def __str__(self):
-        return f"{self.username} products: {self.product}"
-
-    @property
-    def total_price_for_product(self):
-        return self.product.price * self.quantity
-
-    @property
-    def total_price_for_all(self):
-        total_price = 0
-        for product in Basket.objects.all():
-            total_price += (product.quantity * product.product.price)
-
-        return total_price
+        return f"{self.user} products: {self.product}"
 
 
-class ProductStatus(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Пользователь', unique=False)
+class UserOrder(models.Model):
+
+    class Status(models.TextChoices):
+        PAID = 'paid'
+        DELIVERY = 'delivery'
+        IN_STORE = 'in_store'
+        RECEIVED = 'received'
+        RETURNED = 'returned'
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Пользователь', unique=False)
     product = models.OneToOneField(Product, related_name='product', on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0, verbose_name="Количество")
-    paid = models.BooleanField(default=False, verbose_name='Оплачен')
-    in_delivery = models.BooleanField(default=False, verbose_name='Доставляется')
-    delivered_in_shop = models.BooleanField(default=False, verbose_name='Прибыл в ПВЗ')
-    received_by_the_buyer = models.BooleanField(default=False, verbose_name='Получен покупателем')
-    returned = models.BooleanField(default=False, verbose_name='Возвращен')
+    status = models.CharField(choices=Status.choices)
+
+    def __str__(self):
+        return f"{self.product} have status {self.status}"
+
+
+class Comments(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Товар')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Пользователь')
+    comment = models.TextField(verbose_name='Комментарий')
+
+    def __str__(self):
+        return f"'{self.comment}' comment for '{self.product}'"
