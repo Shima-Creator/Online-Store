@@ -4,7 +4,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.views import APIView
 
-
 from .forms import LoginUserForm, UserCreateForm, SellerRegisterForm, BuyerRegisterForm
 from .models import Seller, Buyer
 

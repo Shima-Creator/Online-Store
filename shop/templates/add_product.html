@@ -4,7 +4,7 @@
 
     {% block info %}
         <div class="seller_product">
-                <form method="POST" enctype="multipart/form-data">
+                <form method="POST" enctype="multipart/form-data" class="login_form">
                     {% csrf_token %}
                     {{product_form.as_p}}
                     <p ><button class="add_product_button" type="submit">Сохранить</button></p>

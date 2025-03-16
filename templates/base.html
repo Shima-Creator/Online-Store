@@ -47,15 +47,18 @@
             {% block list %}
             {% endblock %}
         </ul>
+        <ul class="main_list">
+            {% block second_list %}
+            {% endblock %}
+        </ul>
     </div>
     <footer>
         <hr color="black">
         <div>
-            <a href="">О нас</a>
+            <a href="{% url 'about' %}">О нас</a>
             <br>
-            <a href="">Связаться с нами</a>
+            <a href="{% url 'connect' %}">Связаться с нами</a>
             <br>
-            <a href="">Помощь</a>
             <h3>SHIMA STORE</h3>
             <h4>Общество с ограниченной ответственностью</h4>
             <p>Юридический адрес: г. Санкт-Петербург, ул. Чкаловская, д.17, кв.35</p>

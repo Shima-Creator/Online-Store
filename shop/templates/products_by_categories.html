@@ -6,7 +6,6 @@
             {% block list %}
                 {% for product in filter_product %}
                     <li class="product-wrapper">
-<!--                        <a class="product"  href="/product_detail/{{ product.name }}"><img class="product-photo" src="{{ product.photo.url }}" alt='No photo.'/>-->
                         <div class="product">
                             <img class="product-photo" src="{{ product.photo.url }}" alt='No photo.'/>
                             <h2>{{ product.name }}</h2>
@@ -21,7 +20,6 @@
                                 {% endif %}
                             </form>
                         </div>
-<!--                        </a>-->
                     </li>
                 {% endfor %}
             {% endblock %}
