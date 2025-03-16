@@ -42,7 +42,6 @@ footer .div {
     justify-content: center;
     align-items: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Тень для эффекта поднятия */
-    z-index: 1000; /* Устанавливаем z-index для расположения над другими элементами */
     display: flex; /* Используем flexbox для выравнивания содержимого по горизонтали */
     padding: 10px; /* Отступы внутри блока */
 }
@@ -95,29 +94,49 @@ footer .div {
 
 /* Окно товара */
 .product-wrapper {
+  padding-top: 50px;
+  display: inline-block;
+  width: 100%;
+  transition: width .2s;
+}
+
+.comment_wrapper {
+  padding-top: 50px;
+  display: block;
+  width: 100%;
+  transition: width .2s;
+}
+
+.paid_products {
+    padding-top: 20px;
+    display: inline-block;
+    width: 100%;
+    transition: width .2s;
+}
+
+.shop-wrapper {
   display: block;
   width: 100%;
   float: left;
   transition: width .2s;
-
 }
 
 @media only screen and (min-width: 650px) {
-  .product-wrapper {
+  .product-wrapper, .paid_products {
     width: 50%;
     height: 50%;
   }
 }
 
 @media only screen and (min-width: 868px) {
-  .product-wrapper {
+  .product-wrapper, .paid_products {
     width: 25%;
     height: 25%;
   }
 }
 
 @media only screen and (min-width: 1300px) {
-  .product-wrapper {
+  .product-wrapper, .paid_products {
     width: 16%;
     height: 16%;
   }
@@ -160,10 +179,16 @@ footer .div {
 }
 
 .user_img {
+    max-width:36px;
+    max-height:36px;
+    position: center;
+    filter: invert(100%);
+}
+
+.delete_img {
     max-width:34px;
     max-height:34px;
     position: center;
-    filter: invert(100%);
 }
 
 .user_img:hover {
@@ -173,6 +198,15 @@ footer .div {
     filter: invert(20%);
 }
 
+.social_img {
+    max-width:64px;
+    max-height:64px;
+    position: center;
+}
+
+.social_info {
+    margin-left: 500px;
+}
 /* Добавление товара в корзину */
 
 .disabled_button {
@@ -434,16 +468,23 @@ label {
     width: 100%;
 }
 
-.login_button:hover {
-    background-color: #474343;
+.comment_button {
+    background-color: black;
+    color: white;
+    margin-top: 15px;
+    margin-left: 50px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    font-size: 24px;
+    transition: background-color 0.3s ease;
+    display: block;
 }
 
-/* Стили для ссылок */
-/*a {*/
-/*    display: block;*/
-/*    margin-top: 10px;*/
-/*    text-align: center;*/
-/*}*/
+.login_button:hover , .comment_button:hover {
+    background-color: #474343;
+}
 
 /* Выравнивание и другие дополнительные стили (можете убрать) */
 .login_form, .login_button {
@@ -456,21 +497,40 @@ label {
 }
 
 .basket_product {
+  margin-left: 20px;
+  margin-right: 20px;
   display: flex;
+  border: 2px solid black;
+  border-radius: 14px;
+  padding: 20px;
 }
 
 .basket_product_text {
     padding-left: 50px;
-  display: block;
+    display: block;
+    border: 2px solid grey;
+    border-radius: 14px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 10px;
+    margin-left: 50px;
+    box-sizing: border-box;
+}
+
+.product_description {
+    border: 2px solid;
+    border-radius: 14px;
+    padding: 10px;
+    margin-left: 10px;
 }
 
 .basket_product img {
   border-radius: 7px;
   position: center;
-  min-width: 200px;
-  max-width: 200px;
-  min-height: 200px;
-  max-height: 200px;
+  min-width: 300px;
+  max-width: 300px;
+  min-height: 300px;
+  max-height: 300px;
 }
 
 .basket_product h2 {
@@ -482,8 +542,10 @@ label {
 .basket_product p {
   color: #474343;
   font-size: 20px;
-  margin: 50px;
-  padding: 20px;
+  margin: 20px;
+  padding: 10px;
+  font-size: 24px;
+  font-family: cursive;
 }
 
 .seller_product p {
@@ -566,6 +628,44 @@ label {
 .login_form label {
     margin-bottom: 5px; /* Отступ снизу для меток */
     font-weight: bold; /* Жирное начертание для меток */
+    font-size: 24px;
+}
+
+.login_form input[type="number"]{
+    height: 30px;
+    width: 200px;
+    border-radius: 8px;
+    text-align: right;
+    font-family: cursive;
+    font-size: 19px;
+}
+
+.login_form textarea {
+    height: 250px;
+    width: 380px;
+    font-size: 20px;
+    font-family: cursive;
+    border-radius: 8px;
+    resize: vertical;
+}
+
+.login-form input[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.login_form input[type="file"]{
+    height: 150px;
+    width: 250px;
+    border: 1px solid black;
+    border-radius: 8px;
+    text-align:center;
 }
 
 .login_form input[type="text"],
@@ -579,6 +679,13 @@ label {
     border-radius: 4px;
     box-sizing: border-box; /* Чтобы padding не влиял на общую ширину */
     font-size: 1em;
+}
+
+.seller_form input[type='text'] {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    box-sizing: border-box;
 }
 
 .login_form input[type="checkbox"] {
@@ -612,17 +719,30 @@ label {
     margin-bottom: 15px; /* Отступ снизу для заголовков разделов */
 }
 
-.add_product_shop_button {
-  display: inline-block;
+.seller_button {
+    position:center;
+    height: 80px;
+    width: 90%;
+    font-size: 28px;
+    font-family: cursive;
+    margin-left: 10%;
+    margin-right: 10%;
+    padding: 10px 15px;
+    text-align: center;
+}
+
+.add_product_shop_button, .seller_button, .add_shop_button {
+  margin-left: 20px;
+  border-radius: 9px;
   padding: 10px 15px;
   background: #f2f2f2;
-  border: 1px solid #000; /* В ожидании набирающего популярность темного режима, рамка черного цвета */
+  border: 2px solid #000;
   color: #333;
   text-decoration: none;
   text-align: center;
 }
 
-.add_product_shop_button:hover, .add_product_shop_button:focus {
+.add_product_shop_button:hover, .add_shop_button:hover, .add_product_shop_button:focus, .seller_button:hover, .seller_button:focus {
   background: #e2e2f2; /* Эффект при наведении — дополнительное оформление */
 }
 
@@ -651,4 +771,233 @@ label {
     background: black;
 }
 
+.seller-profile-container {
+       max-width: 800px; /* Limit width for readability */
+       margin: 20px auto;
+       padding: 20px;
+       background-color: #f9f9f9;
+       border: 1px solid #ddd;
+       border-radius: 8px;
+
+   }
+
+   .seller-info, .shop-info, .social-links, .edit-form, .product-management {
+       margin-left: 200px;
+       margin-bottom: 20px;
+       padding: 15px;
+       border: 1px solid #eee;
+       border-radius: 5px;
+   }
+
+   .seller-photo {
+       margin-top: 20px;
+       max-width: 300px;
+       height: auto;
+       border-radius: 5px;
+       margin-bottom: 10px;
+   }
+
+   .seller_info {
+        display: flex;
+        border: 2px solid grey;
+        border-radius: 10px;
+        margin-top: 50px;
+        padding: 30px;
+   }
+
+   .social_info {
+       padding: 2px;
+       margin-left: 50px;
+   }
+
+   .social_info h2 {
+        margin: 5px;
+   }
+
+   .social_info a {
+        padding-top: 50px;
+   }
+
+   .shop_list {
+        display: flex;
+   }
+
+   .seller_shop_card {
+        border: 5px solid;
+        border-radius: 8px;
+        align-text: center;
+   }
+
+    .seller_shop_card h1 {
+        position: center;
+        padding-left: 35%;
+        padding-right: 35%;
+    }
+
+    .seller_shop_card h2 {
+        position: center;
+        margin-left: 25%;
+    }
+
+    .seller_shop_card h3 {
+        position: center;
+        padding-left: 5%;
+        padding-right: 5%;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        margin-bottom: 0px;
+        border: 1px solid;
+        background: grey;
+    }
+
+    .shop-wrapper {
+        padding: 5px;
+        margin: 10px;
+    }
+
+   .status {
+        font: 26px red;
+        padding: 1px;
+        margin: 1px;
+   }
+
+    .checkbox {
+        appearance: none; /* Убираем стандартные стили чекбокса */
+      -webkit-appearance: none; /* Для совместимости с Safari и Chrome */
+      width: 30px;
+      height: 30px;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+      outline: none; /* Убираем обводку при фокусе */
+      cursor: pointer;
+      position: relative; /* Для позиционирования галочки */
+      transition: all 0.2s ease; /* Плавная анимация при изменении состояния */
+    }
+
+    .checkbox:hover {
+        border-color: #999;
+    }
+
+    /* Стили при фокусе */
+    .checkbox:focus {
+      border-color: #666;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Небольшая тень при фокусе */
+    }
+
+    /* Стили для отмеченного чекбокса */
+    .checkbox:checked {
+      background-color: grey; /* Синий цвет фона */
+      border-color: black;
+    }
+
+    /* Создаем галочку (используя псевдоэлемент) */
+    .checkbox:checked::before {
+      content: '\2713'; /* Unicode символ галочки */
+      font-size: 16px;
+      color: black;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); /* Центрируем галочку */
+    }
+
+    /* Отключаем стили при отключенном состоянии (если нужно) */
+    .checkbox:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .checkbox:disabled:hover {
+      border-color: #ccc; /* Возвращаем исходный цвет рамки */
+    }
+
+    h1 {
+        font-size: 36px;
+        font-family: cursive;
+        color: red;
+    }
+
+    a {
+        font-size: 24px;
+        font-family: cursive;
+        color: red;
+        text-decoration: none;
+    }
+
+.pagination {
+    padding: 30px;
+    text-align: center;
+}
+
+.pagination a, .pagination span.current {
+    padding: 5px 10px;
+    margin: 0 2px;
+    border: 1px solid #ccc;
+    text-decoration: none;
+    color: #333;
+    border-radius: 22px;
+}
+
+.pagination a:hover {
+    background-color: #f0f0f0;
+}
+
+.pagination span.current {
+    background-color: #ddd;
+    color: #000;
+}
+
+.all_comments {
+    display: block-inline;
+}
+
+.comment {
+    border: 2px solid;
+    border-radius: 14px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.comment h1 {
+    font-size: 24px;
+}
+
+.comment p {
+    font-size: 24px;
+    font-family: cursive;
+}
+
+.comment_form textarea {
+    margin-top: 30px;
+    margin-left: 50px;
+    height: 250px;
+    width: 580px;
+    font-size: 20px;
+    font-family: cursive;
+    border-radius: 8px;
+    resize: vertical;
+}
+
+.about {
+    margin: 40px;
+    padding: 30px;
+    font-family: cursive;
+}
+
+.contact_store {
+    margin-left: 40%;
+}
+
+.contact_store a {
+    font-size: 46px;
+}
+
+@media (max-width: 768px) {
+   .seller-profile-container {
+       padding: 10px;
+   }
+   .seller-info, .shop-info, .social-links, .edit-form, .product-management {
+       padding: 10px;
+   }
+}
 
