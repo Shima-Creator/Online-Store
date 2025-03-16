@@ -23,11 +23,11 @@ class Seller(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='seller')
     upd = models.CharField(max_length=50, default='', verbose_name='Уникальный номер покупателя', blank=True)
     legal_name = models.CharField(max_length=100, default='', verbose_name='Юридическое имя', blank=True)
-    profile_pic = models.ImageField(blank=True, default='Add you photo...', verbose_name='Фото', upload_to='seller')
-    facebook = models.CharField(max_length=50, default='', blank=True)
-    vk = models.CharField(max_length=50, default='', blank=True)
-    instagram = models.CharField(max_length=50, default='', blank=True)
-    telegram = models.CharField(max_length=50, default='', blank=True)
+    profile_pic = models.ImageField(blank=True, verbose_name='Фото', upload_to='seller')
+    facebook = models.CharField(max_length=50, default='', blank=True, null=True)
+    vk = models.CharField(max_length=50, default='', blank=True, null=True)
+    instagram = models.CharField(max_length=50, default='', blank=True, null=True)
+    telegram = models.CharField(max_length=50, default='', blank=True, null=True)
 
     def str(self):
         return self.legal_name
