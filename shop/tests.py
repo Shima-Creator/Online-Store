@@ -1,8 +1,11 @@
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.db import IntegrityError
 
 from shop.factories import *
 from decimal import Decimal
+
+from shop.models import Comments, UserOrder
 
 
 class CategoryModelTests(TestCase):
@@ -173,3 +176,71 @@ class BasketModelTests(TestCase):
         self.assertEqual(basket_item.username, user)
         self.assertEqual(basket_item.product, product)
 
+
+class UserOrderModelTest(TestCase):
+    def setUp(self):
+        """Настройка для тестов UserOrder."""
+        self.user = get_user_model().objects.create_user(username='testuser', password='testpassword')
+        self.product = Product.objects.create(name='Test Product', description='Test Description', price=10.00)
+        self.user_order = UserOrder.objects.create(
+            user=self.user,
+            product=self.product,
+            quantity=2,
+            status=UserOrder.Status.PAID
+        )
+
+    def test_user_order_creation(self):
+        """Проверяет успешное создание объекта UserOrder."""
+        self.assertEqual(self.user_order.user, self.user)
+        self.assertEqual(self.user_order.product, self.product)
+        self.assertEqual(self.user_order.quantity, 2)
+        self.assertEqual(self.user_order.status, UserOrder.Status.PAID)
+
+    def test_user_order_status_choices(self):
+        """Проверяет доступность и значения статусов UserOrder."""
+        expected_choices = [
+            ('paid', 'Paid'),
+            ('delivery', 'Delivery'),
+            ('in_store', 'In Store'),
+            ('received', 'Received'),
+            ('returned', 'Returned'),
+        ]
+        self.assertEqual(UserOrder.Status.choices, expected_choices)
+
+    def test_user_order_str_representation(self):
+        """Проверяет строковое представление объекта UserOrder."""
+        expected_string = f"{self.product} have status paid"
+        self.assertEqual(str(self.user_order), expected_string)
+
+    def test_user_order_quantity_default(self):
+        """Проверяет значение quantity по умолчанию."""
+        user_order = UserOrder.objects.create(user=self.user, product=self.product, status=UserOrder.Status.DELIVERY)
+        self.assertEqual(user_order.quantity, 0)
+
+    def test_user_order_product_related_name(self):
+        """Проверяет корректность related_name в OneToOneField."""
+        self.assertEqual(self.product.product, self.user_order)  # Доступ через related_name
+
+
+class CommentsModelTest(TestCase):
+
+    def setUp(self):
+        """Настройка для тестов Comments."""
+        self.user = get_user_model().objects.create_user(username='testuser', password='testpassword')
+        self.product = Product.objects.create(name='Test Product', description='Test Description', price=10.00)
+        self.comment = Comments.objects.create(
+            product=self.product,
+            user=self.user,
+            comment='This is a test comment.'
+        )
+
+    def test_comment_creation(self):
+        """Проверяет успешное создание объекта Comments."""
+        self.assertEqual(self.comment.product, self.product)
+        self.assertEqual(self.comment.user, self.user)
+        self.assertEqual(self.comment.comment, 'This is a test comment.')
+
+    def test_comment_str_representation(self):
+        """Проверяет строковое представление объекта Comments."""
+        expected_string = f"'This is a test comment.' comment for '{self.product}'"
+        self.assertEqual(str(self.comment), expected_string)
