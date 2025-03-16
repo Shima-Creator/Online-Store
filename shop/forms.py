@@ -7,7 +7,7 @@ from .models import Product, Shop
 class AddProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['photo','name', 'subcategory', 'description', 'stock', 'price']
+        fields = ['photo','name', 'shop', 'subcategory', 'description', 'stock', 'price']
 
 
 class ShopForm(forms.ModelForm):
@@ -22,3 +22,9 @@ class SellerEditForm(forms.ModelForm):
         fields = ['profile_pic', 'facebook', 'instagram', 'vk', 'telegram']
 
 
+class BasketUpdateForm(forms.Form):
+    active = forms.BooleanField(required=False, initial=False)
+
+
+class CommentsForm(forms.Form):
+    comment = forms.CharField(widget=forms.Textarea, label="comment")
