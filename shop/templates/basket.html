@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block title %} Корзина {% endblock %}
-{% block list_name %} Корзина: {% endblock %}
+{% block list_name %} Корзина {{ user }} {% endblock %}
 
     {% block info %}
-        <form method="POST">
+        <form method="POST" action="{% url 'buy_product' %}">
             {% csrf_token %}
             <button class="pay_basket" type="submit">Оплатить</button>
         </form>
@@ -16,16 +16,45 @@
         <hr>
     {% endblock %}
 
+    {% block second_list %}
+        <h1 align="center">Оплачено</h1>
+        {% for p_product in paid_products %}
+            <li class="paid_products">
+                <div class="product">
+                    <img class="product-photo" src="{{ p_product.product.photo.url }}" alt='No photo.'/>
+                    <h2>{{ p_product.product.name }}</h2>
+                    <p>{{ p_product.product.price }} руб.</p>
+                    <p>Количество: {{ p_product.quantity }} шт.</p>
+                    {% if p_product.status == 'paid' %}
+                        <h3 class="status">Оплачено</h3>
+                    {% elif p_product.status == 'delivery' %}
+                        <h3 class="status">В пути</h3>
+                    {% elif p_product.status == 'in_store' %}
+                        <h3 class="status">Доставлен в ПВЗ</h3>
+                    {% elif p_product.status == 'received' %}
+                        <h3 class="status">Получен покупателем</h3>
+                    {% elif p_product.status == 'returned' %}
+                        <h3 class="status">Возвращен</h3>
+                    {% endif %}
+
+                    <a class='product_detail_link' href="/product_detail/{{ p_product.product.id }}">Узнать больше</a>
+                </div>
+                </li>
+        {% endfor %}
+    {% endblock %}
+
     {% block list %}
         {% for product in basket_products %}
                     <li class="product-wrapper">
-                        <input type="checkbox" id="active" name="active" value="true">
-                        <div class="product">
+                        <form method="post" action="{% url 'activate_product' product.id %}">
+                            {% csrf_token %}
+                            <input class='checkbox' type="checkbox" id="active_{{ product.id }}" name="active" value="true" {% if product.active %}checked{% endif %} onchange="this.form.submit()">
+                        </form>
+                            <div class="product">
                             <img class="product-photo" src="{{ product.product.photo.url }}" alt='No photo.'/>
                             <h2>{{ product.product.name }}</h2>
                             <p>{{ product.product.price }} руб.</p>
                             <p>Количество: {{ product.quantity }} шт.</p>
-        <!--                    <input name="productCount" type="number" id="col" value="{{ product.quantity }}">-->
                                 <div class="row">
                                     <form method="POST" action="{% url 'update_quantity' %}">
                                         {% csrf_token %}
@@ -46,8 +75,6 @@
                     </li>
 
         {% endfor %}
-
-
-
+    <hr>
     {% endblock %}
 
