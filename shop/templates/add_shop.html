@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} <h1>Добавление магазина</h1> {% endblock %}
+
+    {% block info %}
+        <div class="seller_product">
+                <form class="login_form" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{shop_form.as_p}}
+                    <p ><button class="add_shop_button" type="submit">Сохранить</button></p>
+
+                </form>
+            </div>
+    {% endblock %}
+
+
+
