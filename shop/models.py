@@ -138,4 +138,4 @@ class Comments(models.Model):
     comment = models.TextField(verbose_name='Комментарий')
 
     def __str__(self):
-        return f"'{self.comment}' comment for '{self.product}'"
+        return f"'{self.comment}' is comment for '{self.product}'"

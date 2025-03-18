@@ -97,14 +97,23 @@ This project is a basic online store built using Django. It provides a foundatio
 ▌Models
 
 •  User: Extends Django's AbstractUser with is_seller field.
+
 •  Buyer: One-to-one relationship with User, stores buyer-specific information like address.
+
 •  Seller: One-to-one relationship with User, stores seller-specific information like upd, legal_name, profile_pic, and social media links.
+
 •  Category: Category's name, description.
+
 •  Subcategory: ForeignKey relationship with Category, subcategory's name, description.
+
 •  Basket: ForeignKey relationship with User, ForeignKey relationship with Product, quantity, active.
+
 •  Shop: ForeignKey relationship with Seller, ForeignKey relationship with Category, shop_name, country, description.
+
 •  Product: Product's name, photo, description, price, ForeignKey relationship with Subcategory, ForeignKey relationship with Shop, stock.
+
 •  UserOrder: ForeignKey relationship with User, One-to-one relationship with Product, quantity, status.
+
 •  Comments: ForeignKey relationship with Product, ForeignKey relationship with User, comment.
 
 

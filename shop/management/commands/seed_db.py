@@ -1,8 +1,6 @@
 import os
-from email.policy import default
-from tkinter.font import names
 
-from django.core.files.base import ContentFile, File
+from django.core.files.base import File
 from django_seed import Seed
 from faker import Faker
 from django.conf import settings
@@ -10,7 +8,7 @@ from django.core.files.base import ContentFile
 from django.core.management.base import BaseCommand
 
 
-from shop.models import Category, SubCategory, Product, Salesman
+from shop.models import Category, SubCategory, Product, Shop
 
 
 class Command(BaseCommand):
@@ -75,7 +73,7 @@ class Command(BaseCommand):
             ),
             'price': lambda x: seeder.faker.random_number(),
             'subcategory': lambda x: SubCategory.objects.order_by('?').first(),
-            'shop': lambda x: Salesman.objects.order_by('?').first(),
+            'shop': lambda x: Shop.objects.order_by('?').first(),
             'stock':lambda x: seeder.faker.random_number(),
             'deleted_at': None
         })
@@ -113,7 +111,7 @@ class Command(BaseCommand):
                 description=fake.text(),
                 photo=content_file,
                 price=fake.random_number(),
-                shop=Salesman.objects.order_by('?').first(),
+                shop=Shop.objects.order_by('?').first(),
                 subcategory=SubCategory.objects.order_by('?').first,
                 stock=fake.random_number(),
                 created_at = fake.date_time_this_year(before_now=True, after_now=False),
