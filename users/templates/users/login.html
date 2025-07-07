@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %} Аутентификация пользователя{% endblock %}
+{% block list_name %} Аутентификация пользователя{% endblock %}
+{% block list %}
+
+    <form class="login_form" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="login_button" type="submit">Войти</button>
+        <a href="{% url 'users:register' %}">Зарегистрироваться</a>
+    </form>
+
+{% endblock %}

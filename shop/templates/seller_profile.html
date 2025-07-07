@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} {{ seller.legal_name }} {% endblock %}
+
+    {% block info %}
+        <div class="seller">
+            <div class="basket_product_text">
+            <form class="seller_form" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="seller_info">
+    <!--                Вывод формы продавца-->
+                    <h1>{{ error }}</h1>
+
+                    <div class="seller_main">
+
+                        {% if seller.profile_pic %}
+                            <h2><img class="seller-photo" src="{{ seller.profile_pic.url }}" alt='No photo.'/> <button class='delete' type="submit" name="delete_photo"><img class="delete_img" src="{% static 'image/delete.png' %}"></button></h2>
+                        {% else %}
+                            <h2>Фото: {{ seller_form.profile_pic }} </h2>
+                        {% endif %}
+
+                        <h2>UPD: {{ seller.upd }}</h2>
+                        <h2>Юридическое название: {{ seller.legal_name }}</h2>
+                    </div>
+                    <div class="social_info">
+                            {% if seller.facebook %}
+                                <h2 class="social_icon"><img class="social_img" src="{% static 'image/facebook.png' %}"><a target=_blank href="{{ seller.facebook }}">{{ seller.facebook }}</a> <button class='delete' type="submit" name="delete_facebook"><img class="delete_img" src="{% static 'image/delete.png' %}"></button></h2>
+                            {% else %}
+                                <h2>Facebook: {{ seller_form.facebook }} </h2>
+                            {% endif %}
+
+                            {% if seller.instagram %}
+                                <h2><img class="social_img" src="{% static 'image/instagram.png' %}"><a target=_blank href="{{ seller.instagram }}">{{ seller.instagram }}</a> <button class='delete' type="submit" name="delete_instagram"><img class="delete_img" src="{% static 'image/delete.png' %}"></button></h2>
+                            {% else %}
+                                <h2>Instagram: {{ seller_form.instagram }}</h2>
+                            {% endif %}
+
+                            {% if seller.vk %}
+                                <h2><img class="social_img" src="{% static 'image/vk.png' %}"><a target=_blank href="{{ seller.vk }}">{{ seller.vk }}</a> <button class='delete' type="submit" name="delete_vk"><img class="delete_img" src="{% static 'image/delete.png' %}"></button></h2>
+                            {% else %}
+                                <h2>VK: {{ seller_form.vk }}</h2>
+                            {% endif %}
+
+                            {% if seller.telegram %}
+                                <h2><img class="social_img" src="{% static 'image/telegram.png' %}"><a target=_blank href="{{ seller.telegram }}">{{ seller.telegram }}</a> <button class='delete' type="submit" name="delete_telegram"><img class="delete_img" src="{% static 'image/delete.png' %}"></button></h2>
+                            {% else %}
+                                <h2>Telegram: {{ seller_form.telegram }}</h2>
+                            {% endif %}
+                    </div>
+                </div>
+                <p ><button class="seller_button" type="submit">Применить изменения</button></p>
+<!--                Вывод формы магазина-->
+                <ul class="shop_list">
+                {% for shop in shops %}
+                    <li class="shop-wrapper">
+                        <div class="seller_shop_card">
+                            <h1><a href="{% url 'salesman' shop.shop_name%}">{{ shop.shop_name }}</a></h1>
+                            <h2>Страна: {{ shop.country }}</h2>
+                            <h2>Категория: {{ shop.category }}</h2>
+                            <h3>{{ shop.description }}</h3>
+                        </div>
+                    </li>
+                {% endfor %}
+                </ul>
+
+                <h1><a class="add_shop_button" href="/seller_profile/add_shop/">Добавить магазин</a></h1>
+
+
+
+            </form>
+            </div>
+        </div>
+
+        <hr>
+
+            <h1><a class="add_product_shop_button" href="/seller_profile/add_product/">Добавить товар</a></h1>
+
+        {% for product in products %}
+            <li class="product-wrapper">
+                        <div class="product">
+                            <img class="product-photo" src="{{ product.photo.url }}" alt='No photo.'/>
+                            <h2>{{ product.name }}</h2>
+                            <p>{{ product.price }} руб.</p>
+                            <a class='product_detail_link' href="/product_detail/{{ product.id }}">Узнать больше</a>
+                            <a class='product_detail_link' href="/seller_profile/edit_product/{{ product.id }}">Изменить</a>
+                            <form method="POST" action="{% url 'delete_product_shop' product.id %}">
+                               {% csrf_token %}
+                               <button class="delete_product" type="submit">Удалить</button>
+                            </form>
+                        </div>
+                    </li>
+        {% endfor %}
+    {% endblock %}
+
+
+
